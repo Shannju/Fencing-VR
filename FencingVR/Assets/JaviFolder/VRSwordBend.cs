@@ -5,25 +5,26 @@ public class VRSwordBend : MonoBehaviour
     public Renderer swordRenderer;
 
     [Header("Tuning")]
-    public float bendSensitivity = 0.002f;
-    public float maxBend = 0.15f;
+    public float bendSensitivity = 0.005f;
+    public float maxBend = 0.12f;
     public float springStrength = 120f;
-    public float damping = 12f;
-    public float tipLagStrength = 6f;
+    public float damping = 10f;
+    public float tipLagStrength = 10f;
 
-    Vector3 lastPosition;
-    Vector3 lastVelocity;
+    private Vector3 lastPosition;
+    private Vector3 lastVelocity;
 
-    float bendX;
-    float bendY;
+    private float bendX;
+    private float bendY;
 
-    float bendVelX;
-    float bendVelY;
+    private float bendVelX;
+    private float bendVelY;
 
-    float tipX;
-    float tipY;
+    private float tipX;
+    private float tipY;
 
     private Vector3 previousAccel = Vector3.zero;
+    private Vector3 currentVelocity = Vector3.zero;
 
     MaterialPropertyBlock mpb;
 
@@ -35,16 +36,21 @@ public class VRSwordBend : MonoBehaviour
 
     void Update()
     {
+
         float dt = Time.deltaTime;
 
         // --- Compute velocity ---
         Vector3 velocity = (transform.position - lastPosition) / dt;
+        currentVelocity = velocity;
+
         Vector3 acceleration = (velocity - lastVelocity) / dt;
         acceleration = Vector3.Lerp(previousAccel, acceleration, 0.5f);
         previousAccel = acceleration;
 
         lastPosition = transform.position;
         lastVelocity = velocity;
+
+        
 
         // --- Convert acceleration into local space ---
         Vector3 localAccel = transform.InverseTransformDirection(acceleration);
@@ -83,8 +89,12 @@ public class VRSwordBend : MonoBehaviour
         value += velocity * dt;
     }
 
-    public void AddImpact(float force)
+    
+
+    public Vector3 GetVelocity()
     {
-        bendVelX += force * 0.01f;
+        return currentVelocity;
     }
+
+   
 }

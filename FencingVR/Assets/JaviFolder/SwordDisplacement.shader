@@ -10,7 +10,7 @@ Shader "Custom/SwordDisplacement"
         _Frequency ("Frequency", Range(0, 10)) = 5.0
         _Speed ("Speed", Range(0, 10)) = 2.0
         _BladeZMin ("Blade Z Min", Float) = 0.0
-        _BladeZMax ("Blade Z Max", Float) = 0.4
+        _BladeZMax ("Blade Z Max", Float) = 0.5
         _HandVelocityX ("Hand Velocity X", Float) = 0.0
         _HandVelocityY ("Hand Velocity Y", Float) = 0.0
         _TipOffsetX ("Tip Offset X", Float) = 0.0
