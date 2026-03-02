@@ -1,17 +1,14 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SwordHitZone : MonoBehaviour
 {
-    public VRSwordBend sword;
-
+    public UnityEvent OnLeafHit;
     void OnTriggerEnter(Collider other)
     {
-        Vector3 closest = other.ClosestPoint(transform.position);
-        //sword.StartContact(closest);
+        //Vector3 closest = other.ClosestPoint(transform.position);
+        if(other.CompareTag("Leaf"))
+            OnLeafHit.Invoke();
     }
 
-    void OnTriggerExit(Collider other)
-    {
-        //sword.EndContact();
-    }
 }
