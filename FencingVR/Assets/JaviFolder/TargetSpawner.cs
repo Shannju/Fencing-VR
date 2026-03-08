@@ -17,6 +17,7 @@ public class TargetSpawner : MonoBehaviour
     private void Start()
     {
         //SpawnTarget();
+        targetsNumber = 15;
         currentTime = 0f;
     }
 
