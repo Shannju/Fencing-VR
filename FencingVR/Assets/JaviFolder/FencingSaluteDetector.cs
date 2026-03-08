@@ -17,7 +17,7 @@ public class FencingSaluteDetector : MonoBehaviour
 
     void Update()
     {
-        if (saluteCompleted) return;
+        //if (saluteCompleted) return;
 
         int score = CalculatePoseScore();
 
@@ -27,7 +27,8 @@ public class FencingSaluteDetector : MonoBehaviour
 
             if (poseTimer >= requiredHoldTime)
             {
-                saluteCompleted = true;
+                //saluteCompleted = true;
+                poseTimer = -2f;
                 OnSaluteCompleted.Invoke();
             }
         }
@@ -46,7 +47,7 @@ public class FencingSaluteDetector : MonoBehaviour
         Vector3 direction = (swordTip.position - head.position).normalized;
         float dot = Vector3.Dot(head.forward, direction);
 
-        if (distance < 0.35f && dot > 0.6f)
+        if (distance < 0.6f && dot > 0.6f)
         {
             score++;
         }

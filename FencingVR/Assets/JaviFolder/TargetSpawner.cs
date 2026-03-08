@@ -66,6 +66,7 @@ public class TargetSpawner : MonoBehaviour
     {
         targetsNumber = 0;
         currentTime = 0f;
+        Destroy(currentTarget);
         SpawnTarget();
     }
 }
