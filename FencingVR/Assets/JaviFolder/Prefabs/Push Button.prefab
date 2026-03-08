@@ -253,6 +253,7 @@ GameObject:
   - component: {fileID: 2739250829560680751}
   - component: {fileID: 1138366457281778022}
   - component: {fileID: 5623608925575762818}
+  - component: {fileID: 6262220113401943773}
   m_Layer: 0
   m_Name: Push Button
   m_TagString: Untagged
@@ -346,9 +347,9 @@ MonoBehaviour:
   m_SelectEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5623608925575762818}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: Play
+      - m_Target: {fileID: 6262220113401943773}
+        m_TargetAssemblyTypeName: SoundBeforeDestroy, Assembly-CSharp
+        m_MethodName: PlaySound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -480,7 +481,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -520,6 +521,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6262220113401943773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7730239373447378058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5176b8b390f94fd469934b7b110ec1e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroySound: {fileID: 8300000, guid: 5ea8b245a13e7cf4881a119a2cb927b9, type: 3}
+  volume: 1
 --- !u!1001 &4688522723685308975
 PrefabInstance:
   m_ObjectHideFlags: 0
