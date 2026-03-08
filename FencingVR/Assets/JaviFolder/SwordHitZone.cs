@@ -7,8 +7,11 @@ public class SwordHitZone : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         //Vector3 closest = other.ClosestPoint(transform.position);
-        if(other.CompareTag("Leaf"))
+        if (other.CompareTag("Leaf")) { 
             OnLeafHit.Invoke();
+            
+            Destroy(other.gameObject);
+        }
     }
 
 }
