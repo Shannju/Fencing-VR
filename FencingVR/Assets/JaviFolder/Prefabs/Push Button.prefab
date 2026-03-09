@@ -535,6 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroySound: {fileID: 8300000, guid: 5ea8b245a13e7cf4881a119a2cb927b9, type: 3}
   volume: 1
+  vfx: {fileID: 8771972552311404798, guid: bbf9e36a48d6c5648a13889afab076fd, type: 3}
 --- !u!1001 &4688522723685308975
 PrefabInstance:
   m_ObjectHideFlags: 0
