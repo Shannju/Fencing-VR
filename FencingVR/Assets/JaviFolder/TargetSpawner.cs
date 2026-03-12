@@ -5,6 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class TargetSpawner : MonoBehaviour
 {
     public GameObject targetPrefab;
+    public GameObject VFX;
     public Transform[] spawnPoints;
     public TextMeshProUGUI timeText;
     public int maxTargets = 15;
@@ -56,9 +57,23 @@ public class TargetSpawner : MonoBehaviour
 
     public void TargetHit()
     {
-        // Spawn next after small delay (optional but feels nicer)
+        
         targetsNumber ++;
-        Destroy(currentTarget);
+        if (currentTarget != null)
+        {
+            Vector3 particlePos = currentTarget.transform.position;
+            particlePos.z += 0.2f;
+            GameObject vfx = Instantiate(
+                VFX,
+                currentTarget.transform.position + -transform.forward * 0.2f,
+                Quaternion.identity
+            );
+
+            Destroy(vfx, 3f); // destroy effect after playing
+
+            Destroy(currentTarget);
+        }
+        
         Invoke(nameof(SpawnTarget), 0.5f);
     }
 

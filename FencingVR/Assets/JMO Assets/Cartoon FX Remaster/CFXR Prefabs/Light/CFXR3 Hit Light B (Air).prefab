@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.8421569, b: 0.36862743, a: 0.105882354}
+      maxColor: {r: 1, g: 1, b: 0.7176471, a: 0.105882354}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5126,7 +5126,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.8834782, b: 0.531, a: 0.8509804}
+      maxColor: {r: 1, g: 1, b: 0.8156863, a: 0.8509804}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0.88235295, b: 0.5294118, a: 1}
@@ -10087,7 +10087,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.8715686, b: 0.48627448, a: 1}
+      maxColor: {r: 1, g: 0.95365834, b: 0.8160377, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -14826,7 +14826,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.99215686, g: 0.86176467, b: 0.47058818, a: 1}
   m_Intensity: 0
-  m_Range: 4
+  m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -14931,7 +14931,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.62877, y: 0.62877, z: 0.62877}
+  m_LocalScale: {x: 0.44537038, y: 0.44537038, z: 0.44537038}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1800347497806655306}
