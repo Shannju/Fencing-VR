@@ -47,7 +47,11 @@ public class TargetSpawner : MonoBehaviour
         Transform spawnPoint = spawnPoints[randomIndex];
         lastRandomIndex = randomIndex;
 
-        currentTarget = Instantiate(targetPrefab, spawnPoint.position, spawnPoint.rotation);
+        currentTarget = Instantiate(
+    targetPrefab,
+    spawnPoint.position,
+    Quaternion.Euler(0f, 0f, 90f)
+);
 
         var button = currentTarget.GetComponentInChildren<XRSimpleInteractable>();
         if( button != null) 
