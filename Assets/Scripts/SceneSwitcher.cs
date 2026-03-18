@@ -1,0 +1,48 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SceneSwitcher : MonoBehaviour
+{
+    private string previousScene;
+
+    void Start()
+    {
+        // ��ȡ��ǰ��������
+        previousScene = SceneManager.GetActiveScene().name;
+    }
+
+    void Update()
+    {
+        // ����Ƿ��� X��Y��A �� B ��
+        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Y) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.B))
+        {
+            // ������һ����
+            SceneManager.LoadScene(previousScene);
+        }
+    }
+
+    // ���°�ťʱ�л�����һ������
+    public void SwitchToScene(string sceneName)
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (sceneName == currentScene)
+        {
+            return;
+        }
+
+        previousScene = currentScene;  // ���µ�ǰ����Ϊ��һ������
+        SceneManager.LoadScene(sceneName);  // ����Ŀ�曲��
+    }
+
+    // ������һ������
+    public void BackToPreviousScene()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (string.IsNullOrEmpty(previousScene) || previousScene == currentScene)
+        {
+            return;
+        }
+
+        SceneManager.LoadScene(previousScene);
+    }
+}
