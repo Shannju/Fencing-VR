@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.Events; // 引入 UnityEvent 类
 
 public class TargetSpawner : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class TargetSpawner : MonoBehaviour
     public TextMeshProUGUI timeText;
     public int maxTargets = 15;
 
+    public UnityEvent onTimerEnd; // 新增事件
+
     private GameObject currentTarget;
     private float currentTime;
     private int targetsNumber = 0;
@@ -17,7 +20,6 @@ public class TargetSpawner : MonoBehaviour
 
     private void Start()
     {
-        //SpawnTarget();
         targetsNumber = 15;
         currentTime = 0f;
     }
@@ -32,37 +34,49 @@ public class TargetSpawner : MonoBehaviour
         int milliseconds = Mathf.FloorToInt((currentTime * 100) % 100);
 
         timeText.text = $"{minutes:00}:{seconds:00}.{milliseconds:00}";
+
+        // 如果计时超过 1 分钟，触发事件
+        if (currentTime >= 60f)
+        {
+            TriggerTimerEndEvent();
+        }
+    }
+
+    private void TriggerTimerEndEvent()
+    {
+        if (onTimerEnd != null)
+        {
+            onTimerEnd.Invoke(); // 触发事件
+        }
     }
 
     private void SpawnTarget()
     {
         if (targetsNumber >= maxTargets) return;
-        //currentTime = 0f;
+
         int randomIndex = 0;
         while (lastRandomIndex == randomIndex)
         {
             randomIndex = Random.Range(0, spawnPoints.Length);
         }
-        
+
         Transform spawnPoint = spawnPoints[randomIndex];
         lastRandomIndex = randomIndex;
 
         currentTarget = Instantiate(
-    targetPrefab,
-    spawnPoint.position,
-    Quaternion.Euler(0f, 0f, 90f)
-);
+            targetPrefab,
+            spawnPoint.position,
+            Quaternion.Euler(0f, 0f, 90f)
+        );
 
         var button = currentTarget.GetComponentInChildren<XRSimpleInteractable>();
-        if( button != null) 
+        if (button != null)
             button.selectEntered.AddListener((args) => TargetHit());
-
     }
 
     public void TargetHit()
     {
-        
-        targetsNumber ++;
+        targetsNumber++;
         if (currentTarget != null)
         {
             Vector3 particlePos = currentTarget.transform.position;
@@ -74,10 +88,9 @@ public class TargetSpawner : MonoBehaviour
             );
 
             Destroy(vfx, 3f); // destroy effect after playing
-
             Destroy(currentTarget);
         }
-        
+
         Invoke(nameof(SpawnTarget), 0.5f);
     }
 

@@ -511,18 +511,8 @@ MonoBehaviour:
   OnLeafHit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1076214612}
-        m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp
-        m_MethodName: AddScore
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      - {m_Target: {fileID: 1076214612}, m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp, m_MethodName: AddScore, m_Mode: 1, m_Arguments: {m_ObjectArgument: {fileID: 0}, m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, m_IntArgument: 0, m_FloatArgument: 0, m_StringArgument: , m_BoolArgument: 0}, m_CallState: 2}
+    m_CallsDirty: 1
 --- !u!1 &578974495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1035,6 +1025,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreTxt: {fileID: 83038912}
+  score: 0
 --- !u!4 &1076214613
 Transform:
   m_ObjectHideFlags: 0
@@ -1632,21 +1623,86 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &1821434419 stripped
+--- !u!1 &1821434419
 GameObject:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 47c1768c8c48a4c4eabb02c56ab78089, type: 3}
   m_PrefabInstance: {fileID: 1585439744}
   m_PrefabAsset: {fileID: 0}
---- !u!23 &1821434420 stripped
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1821434422}
+  - component: {fileID: 1821434426}
+  - component: {fileID: 1821434420}
+  - component: {fileID: 1821434425}
+  m_Layer: 0
+  m_Name: FencingSwordV2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &1821434420
 MeshRenderer:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 47c1768c8c48a4c4eabb02c56ab78089, type: 3}
   m_PrefabInstance: {fileID: 1585439744}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1821434422 stripped
+  m_GameObject: {fileID: 1821434419}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: ca6ff52fd3f07a04c8a943f7fe8f3e12, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!4 &1821434422
 Transform:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 47c1768c8c48a4c4eabb02c56ab78089, type: 3}
   m_PrefabInstance: {fileID: 1585439744}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821434419}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.30152532, y: -0, z: -0, w: 0.95345825}
+  m_LocalPosition: {x: 0, y: -0.0619, z: -0.1284}
+  m_LocalScale: {x: 5.1277, y: 5.1277, z: 5.1277}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1155230396}
+  m_Father: {fileID: 794670951}
+  m_LocalEulerAnglesHint: {x: -35.098, y: 0, z: 0}
 --- !u!114 &1821434425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1665,6 +1721,24 @@ MonoBehaviour:
   springStrength: 120
   damping: 10
   tipLagStrength: 10
+  lastPosition: {x: 0, y: 0, z: 0}
+  lastVelocity: {x: 0, y: 0, z: 0}
+  bendX: 0
+  bendY: 0
+  bendVelX: 0
+  bendVelY: 0
+  tipX: 0
+  tipY: 0
+  previousAccel: {x: 0, y: 0, z: 0}
+  currentVelocity: {x: 0, y: 0, z: 0}
+--- !u!33 &1821434426
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -5754084199372789682, guid: 47c1768c8c48a4c4eabb02c56ab78089, type: 3}
+  m_PrefabInstance: {fileID: 1585439744}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821434419}
+  m_Mesh: {fileID: -2236720919392239454, guid: 47c1768c8c48a4c4eabb02c56ab78089, type: 3}
 --- !u!4 &1961862940 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 90bf812bdec7ed3438a19b2191216759, type: 3}

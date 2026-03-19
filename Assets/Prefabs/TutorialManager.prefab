@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2467286363243416004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4326426124286622694}
+  - component: {fileID: 8295121625142137509}
+  m_Layer: 0
+  m_Name: TutorialManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4326426124286622694
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2467286363243416004}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.000000059604645, y: 1.316, z: 1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8295121625142137509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2467286363243416004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c135750ce45df24ba0b20c78e92b7e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subtitleText: {fileID: 0}
+  uiBoardTransform: {fileID: 0}
+  boardIconImage: {fileID: 0}
+  nextButton: {fileID: 0}
+  part1Targets: {fileID: 0}
+  part2Target: {fileID: 0}
+  iconIntro: {fileID: 21300000, guid: ab4e31ce442eb1244be12d362ade8e81, type: 3}
+  iconBladeControl: {fileID: 21300000, guid: b75f1f980ec9d714b9ecdda315af7b3a, type: 3}
+  iconAttack: {fileID: 21300000, guid: 2f3a58678877bf948a960a25bf5a88ad, type: 3}
+  iconDefence: {fileID: 21300000, guid: 217105d8c42cd584d80bc3f34b659634, type: 3}
+  iconParry: {fileID: 21300000, guid: 05481cf2d91084f4182025c3ef24b624, type: 3}
+  iconParryRiposte: {fileID: 21300000, guid: df2259b32d4ad3443a474e25d727abe7, type: 3}
+  iconFinal: {fileID: 21300000, guid: dd7c0513b7256c2458cc1c936e03a121, type: 3}
+  iconCompleted: {fileID: 21300000, guid: ab4e31ce442eb1244be12d362ade8e81, type: 3}
+  centerPosition: {x: 0, y: 1.2, z: 1.5}
+  centerRotation: {x: 0, y: 0, z: 0}
+  sidePosition: {x: 0.8, y: 0.9, z: 1.3}
+  sideRotation: {x: 0, y: 30, z: 0}
+  currentState: 0

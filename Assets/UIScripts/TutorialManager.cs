@@ -1,152 +1,184 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
+using System.Collections.Generic;
+
+[System.Serializable]
+public class TutorialEventData
+{
+    [Tooltip("事件名称，可用于识别，UI 不强制显示")]
+    public string eventName;
+
+    [Tooltip("如果为空，则保持上次文本不变")]
+    [TextArea(1, 5)]
+    public string subtitle;
+
+    [Tooltip("如果为空则不更新图标")]
+    public Sprite boardIcon;
+
+    [Header("UI 位置（空时保持当前位置）")]
+    public bool overridePosition;
+    public Vector3 uiPosition = new Vector3(0, 1.2f, 1.5f);
+    public Vector3 uiRotation = Vector3.zero;
+
+    [Tooltip("是否在此事件隐藏Next按钮")] 
+    public bool hideNextButton;
+
+    [Header("事件触发（可绑定对象/函数）")]
+    public UnityEvent onEvent;
+}
 
 public class TutorialManager : MonoBehaviour
 {
-    public enum TutorialState
-    {
-        Intro,
-        BladeControl,
-        Attack,
-        Defence,
-        Parry,
-        ParryRiposte,
-        FinalPractice,
-        Completed
-    }
-
     [Header("核心引用")]
     public TextMeshProUGUI subtitleText;
     public Transform uiBoardTransform;
     public Image boardIconImage;
 
     [Header("流程控制引用")]
-    [Tooltip("现在这个按钮会一直存在，充当'跳过/下一页'功能")]
+    [Tooltip("现在这个按钮会一直存在，充当 '跳过/下一页' 功能")]
     public GameObject nextButton;
-    public GameObject part1Targets;
-    public GameObject part2Target;
 
-    [Header("各阶段的 Figma 图标 (拖入Sprite)")]
-    public Sprite iconIntro;
-    public Sprite iconBladeControl;
-    public Sprite iconAttack;
-    public Sprite iconDefence;
-    public Sprite iconParry;         // 新增：Part 4 图标
-    public Sprite iconParryRiposte;  // 新增：Part 5 图标
-    public Sprite iconFinal;         // 新增：Final 图标
-    public Sprite iconCompleted;     // 新增：完成图标
+    [Header("可配置教程事件: 你可以一组一组加, 自定义数量")]
+    public List<TutorialEventData> tutorialEvents = new List<TutorialEventData>();
 
-    [Header("UI 位置设置")]
-    public Vector3 centerPosition = new Vector3(0, 1.2f, 1.5f);
-    public Vector3 centerRotation = new Vector3(0, 0, 0);
-    public Vector3 sidePosition = new Vector3(0.8f, 0.9f, 1.3f);
-    public Vector3 sideRotation = new Vector3(0, -30f, 0);
+    [Header("默认位置 (当事件不覆盖位置时使用)")]
+    public Vector3 defaultPosition = new Vector3(0, 1.2f, 1.5f);
+    public Vector3 defaultRotation = Vector3.zero;
 
-    public TutorialState currentState = TutorialState.Intro;
+    [HideInInspector]
+    public int currentEventIndex = 0;
 
     void Start()
     {
-        if (part1Targets != null) part1Targets.SetActive(false);
-        if (part2Target != null) part2Target.SetActive(false);
+        if (tutorialEvents == null) tutorialEvents = new List<TutorialEventData>();
+        if (tutorialEvents.Count == 0)
+        {
+            Debug.LogWarning("TutorialManager: tutorialEvents is empty. Use Add Empty Event or add events in Inspector.");
+            return;
+        }
 
-        // 游戏一开始，确保 Next 按钮是显示的
         if (nextButton != null) nextButton.SetActive(true);
-
-        UpdateUIForCurrentState();
+        UpdateUIForCurrentEvent();
     }
 
     void Update()
     {
-        // 你的空格键跳页神器！
         if (Input.GetKeyDown(KeyCode.Space))
         {
             AdvanceTutorial();
         }
     }
 
-    public void AdvanceTutorial()
+    public void AddEmptyEvent()
     {
-        if (currentState == TutorialState.Completed) return;
-        currentState++;
-        UpdateUIForCurrentState();
+        if (tutorialEvents == null) tutorialEvents = new List<TutorialEventData>();
+
+        tutorialEvents.Add(new TutorialEventData
+        {
+            eventName = "",
+            subtitle = "",
+            boardIcon = null,
+            overridePosition = false,
+            uiPosition = defaultPosition,
+            uiRotation = defaultRotation,
+            hideNextButton = false
+        });
     }
 
-    void UpdateUIForCurrentState()
+    public void AdvanceTutorial()
     {
-        // 🌟 【关键修改】：每次更新状态时，都强行保证 Next 按钮是显示的！
-        if (nextButton != null) nextButton.SetActive(true);
+        if (tutorialEvents == null || tutorialEvents.Count == 0) return;
+        if (currentEventIndex >= tutorialEvents.Count - 1) return;
+        currentEventIndex++;
+        UpdateUIForCurrentEvent();
+    }
 
-        switch (currentState)
+    public void RestartTutorial()
+    {
+        if (tutorialEvents == null || tutorialEvents.Count == 0) return;
+        currentEventIndex = 0;
+        UpdateUIForCurrentEvent();
+    }
+
+    public void SetEventByName(string eventName)
+    {
+        if (tutorialEvents == null) return;
+        for (int i = 0; i < tutorialEvents.Count; i++)
         {
-            case TutorialState.Intro:
-                subtitleText.text = "Welcome, fencer.\nIn this tutorial, you'll learn how to control your blade.\nIn fencing, the hand does most of the work.\nSmall, precise movements decide whether you attack, defend, or score a touch.\nLet's begin.";
-                PlaceUI(centerPosition, centerRotation);
-                if (boardIconImage != null) boardIconImage.sprite = iconIntro;
-                break;
-
-            case TutorialState.BladeControl:
-                subtitleText.text = "Part 1 - Blade Control\nFirst, hold your blade in front of you.\nYour arm should be relaxed, with the tip of your sword pointing toward your opponent.\nTry moving your blade slightly from side to side.";
-                PlaceUI(sidePosition, sideRotation);
-                if (boardIconImage != null) boardIconImage.sprite = iconBladeControl;
-
-                if (part1Targets != null) part1Targets.SetActive(true);
-                if (part2Target != null) part2Target.SetActive(false);
-                break;
-
-            case TutorialState.Attack:
-                subtitleText.text = "Part 2 - Attack\nThe most basic attack is a thrust.\nExtend your arm forward and aim the tip of your blade toward your opponent's target.\nTry attacking now.";
-                PlaceUI(new Vector3(0.8f, 0.9f, 1.8f), sideRotation);
-                if (boardIconImage != null) boardIconImage.sprite = iconAttack;
-
-                if (part1Targets != null) part1Targets.SetActive(false);
-                if (part2Target != null) part2Target.SetActive(true);
-                break;
-
-            case TutorialState.Defence:
-                subtitleText.text = "Part 3 - Defence\nWhen your opponent attacks, you must defend yourself.\nInstead of moving your whole body, you can deflect the blade with your sword.\nStay focused. An attack is coming.";
-                PlaceUI(sidePosition, sideRotation);
-                if (boardIconImage != null) boardIconImage.sprite = iconDefence;
-
-                if (part2Target != null) part2Target.SetActive(false);
-                break;
-
-            // 🌟 【修复】：补全了后面所有关卡的文字，现在按空格键绝对有反应了！
-            case TutorialState.Parry:
-                subtitleText.text = "Part 4 - Parry\nDeflect the incoming blade to protect your target area.\nMove your blade sideways to block.";
-                PlaceUI(sidePosition, sideRotation);
-                if (boardIconImage != null) boardIconImage.sprite = iconParry;
-                break;
-
-            case TutorialState.ParryRiposte:
-                subtitleText.text = "Part 5 - Parry and Riposte\nA good defense creates an opening.\nParry the attack, then immediately thrust back!";
-                PlaceUI(sidePosition, sideRotation);
-                if (boardIconImage != null) boardIconImage.sprite = iconParryRiposte;
-                break;
-
-            case TutorialState.FinalPractice:
-                subtitleText.text = "Final Practice\nTime to combine everything.\nDefend yourself, find the opening, and strike!";
-                PlaceUI(sidePosition, sideRotation);
-                if (boardIconImage != null) boardIconImage.sprite = iconFinal;
-                break;
-
-            case TutorialState.Completed:
-                subtitleText.text = "Tutorial Completed!\nYou have mastered the basics. Return to the main menu when ready.";
-                PlaceUI(centerPosition, centerRotation);
-                if (boardIconImage != null) boardIconImage.sprite = iconCompleted;
-
-                // 只有在全部结束时，我们才把 Next 按钮隐藏（或者你可以把它变成“返回大厅”按钮）
-                if (nextButton != null) nextButton.SetActive(false);
-                break;
+            if (!string.IsNullOrEmpty(tutorialEvents[i].eventName) && tutorialEvents[i].eventName == eventName)
+            {
+                currentEventIndex = i;
+                UpdateUIForCurrentEvent();
+                return;
+            }
         }
     }
 
-    void PlaceUI(Vector3 targetPos, Vector3 targetRot)
+    public string GetCurrentEventName()
     {
-        if (uiBoardTransform != null)
+        if (tutorialEvents == null || tutorialEvents.Count == 0) return string.Empty;
+        return tutorialEvents[currentEventIndex].eventName ?? string.Empty;
+    }
+
+    public bool IsCurrentEvent(string eventName)
+    {
+        if (string.IsNullOrEmpty(eventName) || tutorialEvents == null || tutorialEvents.Count == 0) return false;
+        return string.Equals(GetCurrentEventName(), eventName, System.StringComparison.OrdinalIgnoreCase);
+    }
+
+    public void GoToEventIndex(int index)
+    {
+        if (tutorialEvents == null || index < 0 || index >= tutorialEvents.Count) return;
+        currentEventIndex = index;
+        UpdateUIForCurrentEvent();
+    }
+
+    public void UpdateCurrentSubtitle(string text)
+    {
+        if (subtitleText == null) return;
+        if (!string.IsNullOrWhiteSpace(text))
         {
-            uiBoardTransform.position = targetPos;
-            uiBoardTransform.rotation = Quaternion.Euler(targetRot);
+            subtitleText.text = text;
+        }
+    }
+
+    void UpdateUIForCurrentEvent()
+    {
+        if (tutorialEvents == null || tutorialEvents.Count == 0)
+        {
+            Debug.LogWarning("TutorialManager: tutorialEvents is empty. 请在Inspector里添加事件。");
+            return;
+        }
+
+        TutorialEventData data = tutorialEvents[currentEventIndex];
+
+        // Next按钮默认可见，除非当前事件设置隐藏
+        if (nextButton != null)
+        {
+            nextButton.SetActive(!data.hideNextButton);
+        }
+
+        if (subtitleText != null && !string.IsNullOrWhiteSpace(data.subtitle))
+        {
+            subtitleText.text = data.subtitle;
+        }
+
+        if (boardIconImage != null && data.boardIcon != null)
+        {
+            boardIconImage.sprite = data.boardIcon;
+        }
+
+        if (uiBoardTransform != null && data.overridePosition)
+        {
+            uiBoardTransform.position = data.uiPosition;
+            uiBoardTransform.rotation = Quaternion.Euler(data.uiRotation);
+        }
+
+        if (data.onEvent != null)
+        {
+            data.onEvent.Invoke();
         }
     }
 }

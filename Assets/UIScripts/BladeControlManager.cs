@@ -2,41 +2,41 @@ using UnityEngine;
 
 public class BladeControlManager : MonoBehaviour
 {
-    [Tooltip("ÍÏÈë³¡¾°ÀïµÄ TutorialManager")]
+    [Tooltip("ï¿½ï¿½ï¿½ë³¡ï¿½ï¿½ï¿½ï¿½ï¿½ TutorialManager")]
     public TutorialManager tutorialManager;
 
-    [Tooltip("ÐèÒª×óÓÒÀ´»Ø»Ó¶¯¼¸´Î²ÅËã¹ý¹Ø£¿")]
+    [Tooltip("ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø»Ó¶ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½ï¿½Ø£ï¿½")]
     public int requiredSwings = 4;
 
     private int currentSwings = 0;
     private bool lastHitLeft = false;
-    private bool isFirstHit = true; // ÓÃÀ´ÅÐ¶ÏÊÇ²»ÊÇ»Ó³öµÄµÚÒ»½£
+    private bool isFirstHit = true; // ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ç²ï¿½ï¿½Ç»Ó³ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½
 
-    // Õâ¸ö·½·¨»á±»×óÓÒÁ½¸ö°Ð×Óºô½Ð
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á±»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óºï¿½ï¿½ï¿½
     public void HitBox(bool isLeft)
     {
-        // ºËÐÄ·À×÷±×£ºÖ»ÓÐµ±½Ì³ÌÍÆ½øµ½ BladeControl ½×¶ÎÊ±£¬¿³°Ð×Ó²ÅËãÊý£¡
-        if (tutorialManager.currentState != TutorialManager.TutorialState.BladeControl)
+        // ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½×£ï¿½Ö»ï¿½Ðµï¿½ï¿½Ì³ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ BladeControl ï¿½×¶ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (tutorialManager == null || !tutorialManager.IsCurrentEvent("BladeControl"))
             return;
 
         if (isFirstHit)
         {
             lastHitLeft = isLeft;
             isFirstHit = false;
-            Debug.Log("»Ó½£Á·Ï°£ººÃµÄ£¬µÚÒ»½££¡");
+            Debug.Log("ï¿½Ó½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ÃµÄ£ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½");
         }
-        else if (lastHitLeft != isLeft) // Èç¹ûÕâ´Î¿³µÄ·½ÏòºÍÉÏ´Î²»Ò»Ñù£¨´ú±íÕæÊµµÄ×óÓÒ»Ó¶¯£©
+        else if (lastHitLeft != isLeft) // ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½Ï´Î²ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ó¶ï¿½ï¿½ï¿½
         {
             currentSwings++;
             lastHitLeft = isLeft;
-            Debug.Log("»Ó½£Á·Ï°£ºÓÐÐ§»Ó¶¯£¡Ä¿Ç°´ÎÊý£º" + currentSwings);
+            Debug.Log("ï¿½Ó½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ó¶ï¿½ï¿½ï¿½Ä¿Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" + currentSwings);
 
-            // Èç¹û´ïµ½ÁËÄ¿±ê´ÎÊý
+            // ï¿½ï¿½ï¿½ï¿½ïµ½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½
             if (currentSwings >= requiredSwings)
             {
-                Debug.Log("»Ó½£Á·Ï°£ºÍê³É£¡");
-                tutorialManager.AdvanceTutorial(); // ¸æËß UI Ãæ°å½øÈëÏÂÒ»¹Ø
-                gameObject.SetActive(false); // ÈÎÎñÍê³É£¬°Ñ×óÓÒ°Ð×ÓÈ«¶¼Òþ²Øµô
+                Debug.Log("ï¿½Ó½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½É£ï¿½");
+                tutorialManager.AdvanceTutorial(); // ï¿½ï¿½ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
+                gameObject.SetActive(false); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò°ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½
             }
         }
     }

@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "XRI Default Input Actions",
     "maps": [
         {
@@ -3331,6 +3332,45 @@
                     "action": "Spawn Object",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "XRActions",
+            "id": "bae78bad-4e38-4f42-9473-286bd26718ab",
+            "actions": [
+                {
+                    "name": "PressButton",
+                    "type": "Button",
+                    "id": "02350cd7-9d41-49c0-a2a4-5cfd4b613e7c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a0171ad7-3d26-4c50-97e2-02f1cadd4bba",
+                    "path": "<ValveIndexController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PressButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "af321c77-e76c-41c4-8c79-dcb47f69175a",
+                    "path": "<ValveIndexController>{RightHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PressButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
