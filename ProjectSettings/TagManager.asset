@@ -7,6 +7,9 @@ TagManager:
   - Leaf
   - Tip
   - Sword
+  - Snappable
+  - triggerTag1
+  - triggerTag2
   layers:
   - Default
   - TransparentFX

@@ -34,4 +34,9 @@ public class UILVLSelection : MonoBehaviour
         spawner.PrepareLevel(TargetSpawner.GameMode.Reaction, TargetSpawner.DifficultyLevel.Inferno);
     }
 
+    public void SelectSurvival()
+    {
+        spawner.PrepareLevel(TargetSpawner.GameMode.Survival, TargetSpawner.DifficultyLevel.Easy);
+    }
+
 }
