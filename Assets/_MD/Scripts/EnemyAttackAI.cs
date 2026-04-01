@@ -14,6 +14,8 @@ public class EnemyAttackAI : MonoBehaviour
     public float attackDelay = 2f;
     public float rotationAngle = 90f;
     public float returnSpeed = 2f;
+    
+    [SerializeField] private TrainingSystem trainingSystem;
 
     Vector3 startPos;
     Quaternion startRot;
@@ -39,6 +41,7 @@ public class EnemyAttackAI : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(attackDelay);
+          
 
             AttackType attack = (AttackType)Random.Range(0, 4);
 
@@ -122,5 +125,7 @@ public class EnemyAttackAI : MonoBehaviour
 
             yield return null;
         }
+        trainingSystem.SetTarget();
+        trainingSystem.Resetcolor();
     }
 }

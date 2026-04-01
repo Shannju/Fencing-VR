@@ -14,12 +14,24 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/1Tutorial.unity
     guid: d1e266a3389d2e54a9840f68c65d6e10
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/2Game.unity
     guid: 2ef51dfd347472e4aadfd5af2274f78c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/2Game 1.unity
     guid: 1642e945ba1c21b4883821ac7dc3ba5a
+  - enabled: 0
+    path: Assets/Scenes/3Game.unity
+    guid: 0604609541609fa48a0f860c6b338192
+  - enabled: 1
+    path: Assets/Scenes/engradeGame.unity
+    guid: d5be27fb7c509ee489b280d2b919fd8c
+  - enabled: 1
+    path: Assets/_MD/Scene/SwordSwing_MD.unity
+    guid: fba8ba87402a9284a837f23d422c3cf2
+  - enabled: 1
+    path: Assets/Scenes/DistanceGame2.unity
+    guid: 5ad9b79c595b6ee49b37ff5301e9b5b9
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 902512ab0eab7cc46b11a24cf1e968fe, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: beb9a4c1280528b4c8017e2453fb84de, type: 2}

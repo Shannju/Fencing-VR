@@ -7,7 +7,7 @@ public class SwordParry : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EnemySword"))
+        if (other.CompareTag("Mid") || other.CompareTag("Tip") || other.CompareTag("End"))
         {
             Debug.Log("PARRY SUCCESS!");
 
@@ -23,7 +23,6 @@ public class SwordParry : MonoBehaviour
                 rb.AddForce(pushDir * parryForce, ForceMode.Impulse);
             }
             
-           
             enemyAI.StartCoroutine("ReturnToStart");
             // Restart enemy AI
             enemyAI.StartCoroutine("AILoop");

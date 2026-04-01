@@ -1,8 +1,6 @@
-
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
-
 
 public class HeadTriggerEvent : MonoBehaviour
 {
@@ -14,6 +12,8 @@ public class HeadTriggerEvent : MonoBehaviour
     [Header("Tag Settings")]
     [SerializeField] private string triggerTag1 = "triggerTag1";
     [SerializeField] private string triggerTag2 = "triggerTag2";
+    [SerializeField] private string triggerTag3 = "triggerTag3";
+    [SerializeField] private string triggerTag4 = "triggerTag4"; // 新增 Tag 4
 
     [Header("Position Lock Settings")]
     [SerializeField] private bool lockPositionOnTrigger = true;
@@ -29,6 +29,8 @@ public class HeadTriggerEvent : MonoBehaviour
     public UnityEvent onTriggered;
     public UnityEvent onTriggeredTag1;
     public UnityEvent onTriggeredTag2;
+    public UnityEvent onTriggeredTag3;
+    public UnityEvent onTriggeredTag4; // 新增 Event 4
 
     private bool hasTriggered = false;
     private float stayTimer = 0f;
@@ -41,7 +43,7 @@ public class HeadTriggerEvent : MonoBehaviour
     {
         if (triggerOnlyOnce && hasTriggered) return;
 
-        UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grab = other.GetComponentInParent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        var grab = other.GetComponentInParent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
         if (grab == null) return;
 
         if (mustBeHeld && !grab.isSelected) return;
@@ -52,12 +54,23 @@ public class HeadTriggerEvent : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (triggerOnlyOnce && hasTriggered) return;
+        // 核心逻辑：如果已经触发且需要锁定，则强制更新位置
+        if (hasTriggered)
+        {
+            if (lockPositionOnTrigger && currentGrab != null)
+            {
+                currentGrab.transform.position = lockedPosition;
+                currentGrab.transform.rotation = lockedRotation;
+            }
+            return;
+        }
+
         if (currentGrab == null) return;
 
-        UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grab = other.GetComponentInParent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        var grab = other.GetComponentInParent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
         if (grab != currentGrab) return;
 
+        // 如果中途松开且必须按住，则重置计时
         if (mustBeHeld && !grab.isSelected)
         {
             stayTimer = 0f;
@@ -68,50 +81,48 @@ public class HeadTriggerEvent : MonoBehaviour
 
         if (stayTimer >= requiredStayTime)
         {
-            hasTriggered = true;
-            onTriggered?.Invoke();
-            
-            // 记录并锁定物体位置和旋转
-            LockObjectPosition(grab);
-            
-            // 启动 Lerp 移动到头部位置
-            if (enableHeadMovement)
-            {
-                if (movementCoroutine != null)
-                {
-                    StopCoroutine(movementCoroutine);
-                }
-                movementCoroutine = StartCoroutine(MoveToHeadPosition(grab));
-            }
-            
-            // 根据tag触发不同的事件
-            if (grab.CompareTag(triggerTag1))
-            {
-                onTriggeredTag1?.Invoke();
-            }
-            else if (grab.CompareTag(triggerTag2))
-            {
-                onTriggeredTag2?.Invoke();
-            }
+            ExecuteTriggerSequence(grab);
         }
-        else if (lockPositionOnTrigger && hasTriggered)
+    }
+
+    private void ExecuteTriggerSequence(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grab)
+    {
+        hasTriggered = true;
+        onTriggered?.Invoke();
+
+        // 1. 锁定物理状态
+        LockObjectPosition(grab);
+
+        // 2. 启动平滑移动
+        if (enableHeadMovement)
         {
-            // 如果已经触发，保持物体在锁定的位置和旋转
-            if (grab != null && grab.transform != null)
-            {
-                grab.transform.position = lockedPosition;
-                grab.transform.rotation = lockedRotation;
-            }
+            if (movementCoroutine != null) StopCoroutine(movementCoroutine);
+            movementCoroutine = StartCoroutine(MoveToHeadPosition(grab));
         }
+
+        // 3. 根据 Tag 触发对应事件
+        CheckTagAndInvoke(grab);
+    }
+
+    private void CheckTagAndInvoke(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grab)
+    {
+        if (grab.CompareTag(triggerTag1)) onTriggeredTag1?.Invoke();
+        else if (grab.CompareTag(triggerTag2)) onTriggeredTag2?.Invoke();
+        else if (grab.CompareTag(triggerTag3)) onTriggeredTag3?.Invoke();
+        else if (grab.CompareTag(triggerTag4)) onTriggeredTag4?.Invoke(); // 判定 Tag 4
     }
 
     private void OnTriggerExit(Collider other)
     {
-        UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grab = other.GetComponentInParent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        var grab = other.GetComponentInParent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
         if (grab != null && grab == currentGrab)
         {
-            currentGrab = null;
-            stayTimer = 0f;
+            // 只有在没触发成功的情况下才清除引用，触发成功后需要保留引用来维持“位置锁定”
+            if (!hasTriggered)
+            {
+                currentGrab = null;
+                stayTimer = 0f;
+            }
         }
     }
 
@@ -120,64 +131,56 @@ public class HeadTriggerEvent : MonoBehaviour
         hasTriggered = false;
         currentGrab = null;
         stayTimer = 0f;
+        if (movementCoroutine != null) StopCoroutine(movementCoroutine);
     }
 
     private void LockObjectPosition(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grab)
     {
-        if (grab == null || grab.transform == null) return;
+        if (grab == null) return;
 
-        Transform grabTransform = grab.transform;
-        
-        // 记录当前位置
-        lockedPosition = grabTransform.position;
-        
-        // 摆正物体旋转
-        if (resetRotationOnTrigger)
-        {
-            lockedRotation = Quaternion.Euler(targetRotation);
-            grabTransform.rotation = lockedRotation;
-        }
-        else
-        {
-            lockedRotation = grabTransform.rotation;
-        }
+        lockedPosition = grab.transform.position;
+        lockedRotation = resetRotationOnTrigger ? Quaternion.Euler(targetRotation) : grab.transform.rotation;
 
-        // 禁用刚体的物理运动
+        grab.transform.rotation = lockedRotation;
+
         Rigidbody rb = grab.GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = true;
+            rb.isKinematic = true; // 触发后转为运动学模式，防止物理抖动
         }
     }
 
     private IEnumerator MoveToHeadPosition(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grab)
     {
-        if (grab == null || grab.transform == null) yield break;
+        if (grab == null) yield break;
 
-        Transform grabTransform = grab.transform;
-        Vector3 startPosition = grabTransform.position;
-        
-        // 获取玩家头部位置（通过主摄像头）
-        Vector3 headPosition = Camera.main != null ? Camera.main.transform.position : transform.position;
-        
+        Vector3 startPosition = grab.transform.position;
         float elapsedTime = 0f;
 
         while (elapsedTime < headMovementDuration)
         {
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / headMovementDuration);
-            
-            // 应用动画曲线
             float curveT = movementCurve.Evaluate(t);
-            
-            // Lerp 移动到头部位置
-            grabTransform.position = Vector3.Lerp(startPosition, headPosition, curveT);
-            
+
+            // 实时获取头部位置（防止玩家移动）
+            Vector3 headPos = Camera.main != null ? Camera.main.transform.position : transform.position;
+
+            grab.transform.position = Vector3.Lerp(startPosition, headPos, curveT);
+
+            // 重要：同步锁定位置，防止 OnTriggerStay 的锁定逻辑造成画面闪烁
+            lockedPosition = grab.transform.position;
+
             yield return null;
         }
 
-        // 确保最终位置准确
-        grabTransform.position = headPosition;
-    }}
+        // 最终对齐
+        if (Camera.main != null)
+        {
+            grab.transform.position = Camera.main.transform.position;
+            lockedPosition = grab.transform.position;
+        }
+    }
+}

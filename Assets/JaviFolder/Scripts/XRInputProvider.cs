@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.XR;
 using System.Collections.Generic;
+using System;
 
 public class XRInputProvider : MonoBehaviour
 {
@@ -40,4 +41,5 @@ public class XRInputProvider : MonoBehaviour
         InputDevices.GetDevicesAtXRNode(node, devices);
         return devices.Count > 0 ? devices[0] : default;
     }
+
 }

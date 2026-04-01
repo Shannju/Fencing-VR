@@ -10,6 +10,12 @@ TagManager:
   - Snappable
   - triggerTag1
   - triggerTag2
+  - PlayerSword
+  - Mid
+  - End
+  - FencingSword
+  - triggerTag3
+  - triggerTag4
   layers:
   - Default
   - TransparentFX

@@ -1,10 +1,13 @@
 using UnityEngine;
+
+
 using UnityEngine.SceneManagement;
 
 public class SceneSwitcher : MonoBehaviour
 {
     public static SceneSwitcher Instance { get; private set; }
     private string previousScene;
+    
 
     void Awake()
     {
@@ -22,15 +25,7 @@ public class SceneSwitcher : MonoBehaviour
         previousScene = SceneManager.GetActiveScene().name;
     }
 
-    void Update()
-    {
-        // ����Ƿ��� X��Y��A �� B ��
-        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Y) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.B))
-        {
-            // ������һ����
-            SceneManager.LoadScene(previousScene);
-        }
-    }
+    
 
     // ���°�ťʱ�л�����һ������
     public void SwitchToScene(string sceneName)

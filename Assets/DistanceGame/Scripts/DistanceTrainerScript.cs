@@ -8,6 +8,7 @@ public class DistanceTrainerScript : MonoBehaviour
     public Transform target;
     public TargetColor targetColor;
     public FencingSaluteDetector saluteDetector;
+    public AudioSource source;
 
     [Header("Distance settings")]
     public float idealDist = 2.0f;
@@ -21,6 +22,8 @@ public class DistanceTrainerScript : MonoBehaviour
     public float score;
     public float scorePerSecond = 10f;
     public TextMeshProUGUI textScore;
+    public TextMeshProUGUI TimeUI;
+
 
     [Header("Timer")]
     public float gameDuration = 30f;
@@ -69,18 +72,22 @@ public class DistanceTrainerScript : MonoBehaviour
         //might add  setActive(true) + spawn position ... 
         timeRemaining = gameDuration;
         playGame = true;
+        //start sounds time
+        source.Play();
     }
 
     public void StopDistanceTraining()
     {
         //might add setActive(false) 
         playGame = false;
+        //finish time sound
+        source.Stop();
     }
 
     private void TimeToFinish()
     {
         timeRemaining -= Time.deltaTime;
-
+        ShowTime(Mathf.Max(0,timeRemaining));
         if (timeRemaining <= 0f)
         {
             timeRemaining = 0f;
@@ -187,7 +194,7 @@ public class DistanceTrainerScript : MonoBehaviour
         }
         else 
         {
-            score = scorePerSecond * Time.deltaTime;
+            score += scorePerSecond * Time.deltaTime;
             targetColor.ChangeColor(Color.green, t);
         }
         // Have a UI slider that represents the distance?
@@ -200,7 +207,12 @@ public class DistanceTrainerScript : MonoBehaviour
 
     private void ShowScore()
     {
-        textScore.text = score.ToString();
+        textScore.text = "score:\n" + Mathf.Floor(score).ToString();
+    }
+
+    private void ShowTime(float t)
+    {
+        TimeUI.text = "time:\n" + t.ToString("F2");
     }
 
     public void SetTraining(float moveSpeed, float moveRange, float scorePerSecond)
