@@ -7,6 +7,10 @@ public class UILVLSelection : MonoBehaviour
     private TargetSpawner.GameMode selectedMode;
     private TargetSpawner.DifficultyLevel selectedDifficulty;
 
+    public GameObject flatTarget;
+    public GameObject modelTarget;
+
+
     // --- MODE SELECTION ---
 
     public void SelectSpeedrun()
@@ -37,6 +41,24 @@ public class UILVLSelection : MonoBehaviour
     public void SelectSurvival()
     {
         spawner.PrepareLevel(TargetSpawner.GameMode.Survival, TargetSpawner.DifficultyLevel.Easy);
+    }
+
+    // -- Target change --
+
+    public void ChangeTarget()
+    {
+        if (flatTarget.activeSelf)
+        {
+            //change to model
+            flatTarget.SetActive(false);
+            modelTarget.SetActive(true);
+        }
+        else
+        {
+            modelTarget.SetActive(false);
+            flatTarget.SetActive(true);
+            
+        }
     }
 
 }
