@@ -5,11 +5,16 @@ using Random = UnityEngine.Random;
 public class ParryDetector : MonoBehaviour
 {
     //public float parryForce = 5f;
+    public EnemyAttackAI gameController;
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private GameObject[] hitParticles;
     
+
+    //IMPROVE: GET SCORE DEPENDING ON THE DISTANCE OF THE ATTACK -- GET SCORE JUST ONCE PER ATTACK
     private void OnTriggerEnter(Collider other)
     {
+        // If game is paused return
+        if (gameController.gamePaused) return;
         if (other.CompareTag("Tip"))
         {
             Debug.Log("Tip!");

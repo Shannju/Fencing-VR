@@ -17,6 +17,8 @@ public class EnemyAttackAI : MonoBehaviour
     
     [SerializeField] private TrainingSystem trainingSystem;
 
+    public bool gamePaused = false;
+
     Vector3 startPos;
     Quaternion startRot;
 
@@ -33,12 +35,36 @@ public class EnemyAttackAI : MonoBehaviour
         startPos = transform.localPosition;
         startRot = transform.localRotation;
 
+        //StartCoroutine(AILoop());
+        StartTraining();
+    }
+
+    public void StartTraining()
+    {
+        gamePaused = false;
         StartCoroutine(AILoop());
+    }
+
+    public void PauseTraining()
+    {
+        gamePaused = true;
+    }
+
+    public void ResumeTraining()
+    {
+        gamePaused = false;
+    }
+
+    public void StopTraining()
+    {
+        gamePaused = true;
+        StopCoroutine(AILoop());
+
     }
 
     IEnumerator AILoop()
     {
-        while (true)
+        while (!gamePaused)
         {
             yield return new WaitForSeconds(attackDelay);
           
@@ -70,6 +96,7 @@ public class EnemyAttackAI : MonoBehaviour
 
     IEnumerator SlashAttack(Transform target, Vector3 rotationAxis)
     {
+        if (gamePaused) yield return null;
         float t = 0;
 
         Vector3 startPosition = transform.position;
@@ -92,6 +119,8 @@ public class EnemyAttackAI : MonoBehaviour
 
     IEnumerator ThrustAttack(Transform target)
     {
+        if (gamePaused) yield return null;
+
         float t = 0;
 
         Vector3 startPosition = transform.position;
@@ -110,6 +139,7 @@ public class EnemyAttackAI : MonoBehaviour
 
     IEnumerator ReturnToStart()
     {
+        if (gamePaused) yield return null;
         yield return new WaitForSeconds(1f);
         float t = 0;
 

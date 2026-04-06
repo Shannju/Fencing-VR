@@ -15,6 +15,7 @@ public class TargetSpawner : MonoBehaviour
     public Transform[] spawnPoints;
     public TextMeshProUGUI timeText;
     public FencingSaluteDetector saluteDetector;
+    public PlayAreaZone gameZone;
     public int maxTargets = 15;
 
 
@@ -136,7 +137,7 @@ public class TargetSpawner : MonoBehaviour
 
     public void PrepareLevel(GameMode mode, DifficultyLevel difficulty)
     {
-        // === 【保留】：你原来的代码，完全不动 ===
+        // 
         StopGame();
         saluteDetector.ResetSalute();
 
@@ -146,12 +147,12 @@ public class TargetSpawner : MonoBehaviour
         currentMode = mode;
         currentDifficulty = difficulty;
 
-        // === 【新增】：关掉文字，显示起势图片，关掉游戏剪影 ===
+        // 
         if (stateGuideText != null) stateGuideText.SetActive(false);
         if (stateSaluteGuide != null) stateSaluteGuide.SetActive(true);
         if (stateGameVisuals != null) stateGameVisuals.SetActive(false);
 
-        // === 【保留】：你原来的代码，完全不动 ===
+        // 
         if (currentTarget != null)
             Destroy(currentTarget);
     }
@@ -159,6 +160,11 @@ public class TargetSpawner : MonoBehaviour
     public void OnSaluteCompleted()
     {
         if (!waitingForSalute) return;
+        if (!gameZone.IsPlayerInside())
+        {
+            saluteDetector.ResetSalute();
+            return;
+        }
 
         waitingForSalute = false;
 
@@ -203,8 +209,16 @@ public class TargetSpawner : MonoBehaviour
     {
         if (!isPlaying) return;
 
+        
         if (targetsNumber >= maxTargets)
             return;
+
+        if (currentMode == GameMode.Reaction || currentMode == GameMode.Survival)
+        {
+            CancelInvoke(nameof(TargetMissed));
+            Invoke(nameof(TargetMissed), targetLifetime);
+        }
+        if (currentTarget != null) return;
 
         int randomIndex = 0;
         while (lastRandomIndex == randomIndex)
@@ -224,11 +238,11 @@ public class TargetSpawner : MonoBehaviour
         if (button != null)
             button.selectEntered.AddListener((args) => TargetHit());
 
-        if (currentMode == GameMode.Reaction || currentMode == GameMode.Survival)
+        /*if (currentMode == GameMode.Reaction || currentMode == GameMode.Survival)
         {
             CancelInvoke(nameof(TargetMissed));
             Invoke(nameof(TargetMissed), targetLifetime);
-        }
+        }*/
         
 
     }
@@ -335,6 +349,19 @@ public class TargetSpawner : MonoBehaviour
         targetsNumber = 0;
         currentTime = 0f;
         Destroy(currentTarget);
+        SpawnTarget();
+    }
+
+    public void PauseTarget()
+    {
+        isPlaying = false;
+        CancelInvoke();
+    }
+
+    public void ResumeTarget()
+    {
+        isPlaying = true;
+
         SpawnTarget();
     }
 

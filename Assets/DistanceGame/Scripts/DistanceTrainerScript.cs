@@ -8,7 +8,9 @@ public class DistanceTrainerScript : MonoBehaviour
     public Transform target;
     public TargetColor targetColor;
     public FencingSaluteDetector saluteDetector;
+    public PlayAreaZone gameZone;
     public AudioSource source;
+    public GameObject StateSalute;
 
     [Header("Distance settings")]
     public float idealDist = 2.0f;
@@ -70,7 +72,16 @@ public class DistanceTrainerScript : MonoBehaviour
     public void StartDistanceTraining()
     {
         //might add  setActive(true) + spawn position ... 
+        if (!gameZone.IsPlayerInside())
+        {
+            saluteDetector.ResetSalute();
+            return;
+        }
+
+        StateSalute.SetActive(false);
+
         timeRemaining = gameDuration;
+        score = 0;
         playGame = true;
         //start sounds time
         source.Play();
@@ -82,6 +93,19 @@ public class DistanceTrainerScript : MonoBehaviour
         playGame = false;
         //finish time sound
         source.Stop();
+    }
+
+    public void PauseTarget()
+    {
+        playGame = false;
+        source.Pause();
+    }
+
+    public void ResumeTarget()
+    {
+        playGame = true;
+
+        source.UnPause();
     }
 
     private void TimeToFinish()
