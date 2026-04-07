@@ -26,9 +26,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/engradeGame.unity
     guid: d5be27fb7c509ee489b280d2b919fd8c
-  - enabled: 1
+  - enabled: 0
     path: Assets/_MD/Scene/SwordSwing_MD.unity
     guid: fba8ba87402a9284a837f23d422c3cf2
+  - enabled: 1
+    path: Assets/Scenes/SwordSwing_MD.unity
+    guid: 5a0a1729a5a2b5f4cb70dc1bc3585799
   - enabled: 1
     path: Assets/Scenes/DistanceGame2.unity
     guid: 5ad9b79c595b6ee49b37ff5301e9b5b9

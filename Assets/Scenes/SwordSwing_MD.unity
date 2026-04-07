@@ -1058,6 +1058,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5339439511837667472, guid: 9038bc952e63d2f44ac10912d6962973, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1205100955}
+    - target: {fileID: 5339439511837667472, guid: 9038bc952e63d2f44ac10912d6962973, type: 3}
       propertyPath: OnPlayerExit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1961278494}
@@ -8001,7 +8005,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1162361396
 Transform:
   m_ObjectHideFlags: 0
@@ -8081,6 +8085,11 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!4 &1205100955 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1767192434, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 794670950}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1205466224
 GameObject:
   m_ObjectHideFlags: 0
